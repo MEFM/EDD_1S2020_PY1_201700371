@@ -1,0 +1,7 @@
+digraph a{
+node [shape = circle];
+Juan->Alfonzo
+Juan->Pe
+Pe->Bas
+
+}

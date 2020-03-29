@@ -1,0 +1,91 @@
+digraph discografia{
+node [shape = rectangle]
+x01426650[label = "-1", width = 1.5, group = 1];
+e0[ shape = point, width = 0 ];
+e1[ shape = point, width = 0 ];
+
+
+x01426258[label = "2", width = 1.5, group = 1];
+
+
+x01431958[label = "3", width = 1.5, group = 1];
+
+
+x01431BF8[label = "5", width = 1.5, group = 1];
+
+
+x01431DE0[label = "6", width = 1.5, group = 1];
+
+
+x01431EC0[label = "7", width = 1.5, group = 1];
+
+
+x01431AA8[label = "8", width = 1.5, group = 1];
+
+
+x01426650->x01426258
+x01426258->x01426650
+x01426258->x01431958
+x01431958->x01426258
+x01431958->x01431BF8
+x01431BF8->x01431958
+x01431BF8->x01431DE0
+x01431DE0->x01431BF8
+x01431DE0->x01431EC0
+x01431EC0->x01431DE0
+x01431EC0->x01431AA8
+x01426118[label = "8", width = 1.5, group = 1];
+x014318E8[label = "9", width = 1.5, group = 1];
+x01431A38[label = "10", width = 1.5, group = 1];
+x01431B88[label = "11", width = 1.5, group = 1];
+x01432390[label = "12", width = 1.5, group = 1];
+x01426650->x01426118
+x01426118->x01426650
+x01426118->x014318E8
+x014318E8->x01426118
+x014318E8->x01431A38
+x01431A38->x014318E8
+x01431A38->x01431B88
+x01431B88->x01431A38
+x01431B88->x01432390
+{rank = same; Root
+; x01426650
+; x01426118
+; x014318E8
+; x01431A38
+; x01431B88
+; x01432390
+}
+
+x01426650[label = "-1", group = 1]
+x01426118[label = "8", group = 2]
+x014318E8[label = "9", group = 3]
+x01431A38[label = "10", group = 4]
+x01431B88[label = "11", group = 5]
+x01432390[label = "12", group = 6]
+y01426650[label = ""]
+y01426258[label = "a"]
+y01431958[label = "b"]
+y01431BF8[label = "d"]
+y01431DE0[label = "e"]
+y01431EC0[label = "f"]
+y01431AA8[label = "c"]
+x01426650-> y01426650
+x01426650-> y01426650
+x01426258-> y01426258
+x01426118-> y01426258
+x01431958-> y01431958
+x014318E8-> y01431958
+x01431BF8-> y01431BF8
+x01431B88-> y01431BF8
+x01431DE0-> y01431DE0
+x01431EC0-> y01431EC0
+x01432390-> y01431EC0
+x01431AA8-> y01431AA8
+{rank = same; x01426650; y01426650}
+{rank = same; x01426118; y01426118}
+{rank = same; x014318E8; y014318E8}
+{rank = same; x01431A38; y01431A38}
+{rank = same; x01431B88; y01431B88}
+{rank = same; x01432390; y01432390}
+}
