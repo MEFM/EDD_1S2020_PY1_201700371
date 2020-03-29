@@ -23,7 +23,7 @@ ScoreBoard* clasificacion = new ScoreBoard();
 Ficha* fichas = new Ficha();
 
 //Variables globales
-
+int cuadrado = 0;
 
 //Metodos utilizados para los menus
 
@@ -63,7 +63,7 @@ void menu() {
 
 void archivo() {
 	string nombre = "";
-	int cuadrado = 0;
+
 	cout << "Ingrese nombre del archivo" << endl;
 	cin.ignore();
 	getline(cin, nombre);
@@ -86,8 +86,8 @@ void archivo() {
 			tablero->insertar("", x, y, valor);
 		}
 		for (const auto& ell : el["triples"]) {
-			 x = ell["x"];
-			 y = ell["y"];
+			x = ell["x"];
+			y = ell["y"];
 			int valor = 3;
 			tablero->insertar("", x, y, valor);
 		}
@@ -176,7 +176,7 @@ void juego(Jugador* j1, Jugador* j2) {
 
 	while (validador) {
 
-		cout << "Te toca colocar tu palabra jugador "<< turno1 << endl;
+		cout << "Te toca colocar tu palabra jugador " << turno1 << endl;
 		cout << "Posicion de inicio de la palabra en x: ";
 		//Ingresar posicion en x		
 		cin >> xx;
@@ -189,6 +189,28 @@ void juego(Jugador* j1, Jugador* j2) {
 		cin.ignore();
 		getline(cin, palabraIngresada);
 		char* insertada = (char*)palabraIngresada.c_str();
+		cout << "Vertical u Horizontal? [V/H]" << endl;
+		char validacion1 = _getch();
+		if (validacion1 == 'V' || validacion1 == 'v') {
+			for (int i = 0; i < palabraIngresada.size(); i++) {
+				if ((yy + palabraIngresada.size()) > cuadrado) {
+					cout << "Te pasaste de las dimensiones del tablero, perdiste tu oportunidad." << endl;
+				}
+				else {
+					tablero->insertar(insertada[i] + "", xx, yy + i);
+				}
+			}
+		}
+		else if (validacion1 == 'N' || validacion1 == 'n') {
+			for (int i = 0; i < palabraIngresada.size(); i++) {
+				if ((xx + palabraIngresada.size()) > cuadrado) {
+					cout << "Te pasaste de las dimensiones del tablero, perdiste tu oportunidad." << endl;
+				}
+				else {
+					tablero->insertar(insertada[i] + "", xx + i, yy);
+				}
+			}
+		}
 
 
 		cout << "Te toca colocar tu palabra jugador " << turno2 << endl;
@@ -203,6 +225,31 @@ void juego(Jugador* j1, Jugador* j2) {
 		cout << "Ingresar palabra" << endl;
 		cin.ignore();
 		getline(cin, palabraIngresada);
+		char* insertadaa = (char*)palabraIngresada.c_str();
+		cout << "Vertical u Horizontal? [V/H]" << endl;
+		char validacion2 = _getch();
+		if (validacion2 == 'V' || validacion2 == 'v') {
+			for (int i = 0; i < palabraIngresada.size(); i++) {
+				if ((yy + palabraIngresada.size()) > cuadrado) {
+					cout << "Te pasaste de las dimensiones del tablero, perdiste tu oportunidad." << endl;
+				}
+				else {
+					tablero->insertar(insertadaa[i] + "", xx, yy + i);
+				}
+			}
+		}
+		else if (validacion2 == 'N' || validacion2 == 'n') {
+			for (int i = 0; i < palabraIngresada.size(); i++) {
+				if ((xx + palabraIngresada.size()) > cuadrado) {
+					cout << "Te pasaste de las dimensiones del tablero, perdiste tu oportunidad." << endl;
+				}
+				else {
+					tablero->insertar(insertadaa[i] + "", xx + i, yy);
+				}
+			}
+		}
+
+
 
 
 		cout << "Ya pasaron sus turnos, desean seguir jugando? [S/N]" << endl;
@@ -210,7 +257,7 @@ void juego(Jugador* j1, Jugador* j2) {
 		if (caracter == 'S' || caracter == 's') {
 			validador = false;
 		}
-		else if (caracter =='n' || caracter == 'N') {
+		else if (caracter == 'n' || caracter == 'N') {
 			validador = true;
 		}
 	}
@@ -271,7 +318,7 @@ void menuReportes() {
 int main()
 {
 
-
+	menu();
 	//tab.graficar();
 }
 
