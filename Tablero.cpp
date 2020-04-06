@@ -7,10 +7,11 @@ NodoTablero* Tablero::buscarColumna(int columna) {
 	{
 		if (temporal->columna == columna) {
 			return temporal;
+			break;
 		}
 		temporal = temporal->siguiente;
 	}
-	return NULL;
+	return 0;
 }
 
 NodoTablero* Tablero::buscarFila(int fila) {
@@ -18,10 +19,11 @@ NodoTablero* Tablero::buscarFila(int fila) {
 	while (temporal != 0) {
 		if (temporal->fila == fila) {
 			return temporal;
+			break;
 		}
 		temporal = temporal->abajo;
 	}
-	return NULL;
+	return 0;
 }
 
 NodoTablero* Tablero::insertarColumna(NodoTablero* nuevo, NodoTablero* cabezaColumna) {
@@ -31,6 +33,7 @@ NodoTablero* Tablero::insertarColumna(NodoTablero* nuevo, NodoTablero* cabezaCol
 	while (true) {
 		if (auxiliar->columna == nuevo->columna) {
 			auxiliar->fila = nuevo->fila;
+			auxiliar->columna = nuevo->columna;
 			auxiliar->letra = nuevo->letra;
 			return auxiliar;
 		}
@@ -65,6 +68,7 @@ NodoTablero* Tablero::insertarFila(NodoTablero* nuevo, NodoTablero* cabezaFila) 
 
 	while (true) {
 		if (auxiliar->fila == nuevo->fila) {
+			auxiliar->fila = nuevo->fila;
 			auxiliar->columna = nuevo->columna;
 			auxiliar->letra = nuevo->letra;
 			return auxiliar;
@@ -96,16 +100,10 @@ NodoTablero* Tablero::insertarFila(NodoTablero* nuevo, NodoTablero* cabezaFila) 
 }
 
 NodoTablero* Tablero::crearFila(int fila) {
-	//NodoTablero* cabezaFila = this->raiz;
-	//NodoTablero* auxiliar = new NodoTablero("x", fila, 0);
-	//NodoTablero* filaa = insertarFila(auxiliar, cabezaFila);
 	return insertarFila(new NodoTablero("", fila, 0), this->raiz);
 }
 
 NodoTablero* Tablero::crearColumna(int columna) {
-	//NodoTablero* cabezaColumna = this->raiz;
-	//NodoTablero* auxiliar = new NodoTablero("x", 0, columna);
-	//NodoTablero* columnaa = insertarFila(auxiliar, cabezaColumna);
 	return insertarColumna(new NodoTablero("", 0, columna), this->raiz);
 }
 
@@ -171,172 +169,318 @@ void Tablero::insertar(string letra, int fila, int columna, int valor) {
 }
 
 void Tablero::imprimir() {
+	cout << "aaj?" << endl;
 	if (this->raiz == 0) {
 		cout << "No hay letras en el tablero." << endl;
 	}
 	else {
-		NodoTablero* temporal = this->raiz;
-		NodoTablero* temporal2 = 0;
-		int numerador = 1;
-		while (temporal != 0)
-		{
-			
-			temporal2 = temporal;
-			while (temporal2 != 0)
-			{
-				cout <<"Fila "<<temporal->fila<< " Columna " <<temporal2->columna <<" Letra " <<temporal->letra << endl;
-				temporal2 = temporal2->siguiente;
-			}
 
-			temporal = temporal->abajo;
+		NodoTablero* columna = raiz;
+
+		int numerador = 0;
+		while (columna != 0)
+		{
+			NodoTablero* dato = columna->abajo;
+			if (dato == 0) {
+				cout << "Que putas?" << endl;
+			}
+			while (dato != 0) {
+				cout << "aa" << endl;
+				cout << dato->letra << endl;
+				dato = dato->abajo;
+			}
+			columna = columna->siguiente;
 		}
 	}
 }
 
 
 void Tablero::graficar() {
+	if (this->raiz != 0) {
+		ofstream archivo;
+		archivo.open("Tablero.dot", ios::out);
 
-
-	ofstream WriteFile("Discografia.dot");
-	WriteFile << "digraph discografia{" << endl;
-	WriteFile << "node [shape = rectangle]" << endl;
-	bool vali = true;
-	int grupo = 1;
-
-	NodoTablero* temporal1 = raiz;
-	NodoTablero* temporal2 = raiz;
-	NodoTablero* constante = raiz;
-	WriteFile << "x" << temporal1 << "[label = \"" << temporal1->fila << "\", width = 1.5, group = 1];" << endl;
-	WriteFile << "e0[ shape = point, width = 0 ];" << endl;
-	WriteFile << "e1[ shape = point, width = 0 ];" << endl;
-
-	while (temporal1 != 0)
-	{
-		if (temporal1->arriba != 0) {
-			grupo = grupo + 1;
-			WriteFile << "x" << temporal1 << "[label = \"" << temporal1->fila << "\", width = 1.5, group = 1];" << endl;
-		}
-
-		WriteFile << endl;
-		WriteFile << endl;
-		temporal1 = temporal1->abajo;
-	}
-	temporal1 = raiz;
-	while (temporal1 != 0) {
-		if (temporal1->abajo == 0) {
-
+		if (!archivo.good()) {
+			cout << "Lo siento, no se puede generar." << endl;
 		}
 		else {
-			if (temporal1->arriba != 0) {
+			archivo << "digraph Matriz { " << endl;
+			archivo << "node [shape=box]" << endl;
+			archivo << endl;
 
-				WriteFile << "x" << temporal1 << "->x" << temporal1->arriba << endl;
+			/*add group 1 for vertical alignment */
+			archivo << "Root[label = " << "\"" << "Root\", width=1.5, group = 1];" << endl;
+			archivo << endl;
+
+			/*empty nodes, needed to override graphiz' default node placement */
+			archivo << "e0[ shape = point, width = 0 ];" << endl;
+			archivo << "e1[ shape = point, width = 0 ];" << endl;
+			archivo << endl;
+
+			/* groups added for vertical alignment (ROWS) */
+			NodoTablero* row = raiz->abajo;
+			int index = 0;
+			while (row != 0)
+			{
+				archivo << "U" << index << "[label =" << "\"" << row->fila << "\" width = 1.5, group = 1 ];" << endl;
+				index++;
+				row = row->abajo;
+			}
+			archivo << endl;
+
+			/*Links Row*/
+			row = raiz->abajo;
+			index = 0;
+
+			while (row->abajo != 0)
+			{
+				archivo << "U" << index << "->" << "U" << index + 1 << ";" << endl;
+				archivo << "U" << index + 1 << "->" << "U" << index << ";" << endl;
+
+				index++;
+				row = row->abajo;
 			}
 
-			WriteFile << "x" << temporal1 << "->x" << temporal1->abajo << endl;
-		}
-		temporal1 = temporal1->abajo;
-	}
-	while (temporal2 != 0) {
-		if (temporal2->anterior != 0) {
-			WriteFile << "x" << temporal2 << "[label = \"" << temporal2->columna << "\", width = 1.5, group = 1];" << endl;
-		}
-		
-		temporal2 = temporal2->siguiente;
-	}
+			archivo << endl;
+			/* groups 2 to 6 added for vertical alignment (COLUMN) */
+			NodoTablero* col = raiz->siguiente;
+			index = 0;
+			int group = 2;
 
-	temporal2 = raiz;
-	temporal1 = raiz;
+			while (col != 0)
+			{
 
-	while (temporal2 != 0) {
-		if (temporal2->siguiente == 0) {
-			temporal1 = temporal1->abajo;
-			temporal2 = temporal1;
-		}
-		else
-		{
-			if (temporal2->anterior != 0) {
-				WriteFile << "x" << temporal2 << "->x" << temporal2->anterior << endl;
+				archivo << "A" << index << "[label =" << "\"" << col->columna << "\" width = 1.5, group = " << group << "];" << endl;
+				index++;
+				group++;
+				col = col->siguiente;
 			}
-			WriteFile << "x" << temporal2 << "->x" << temporal2->siguiente << endl;
 
-		}
-		temporal2 = temporal2->siguiente;
-	}
-	temporal2 = raiz;
-	string anidador = "";
+			archivo << endl;
+			/*------- links Column --------*/
+			col = raiz->siguiente;
+			index = 0;
 
-	WriteFile << "{rank = same; Root" << endl;
-	while (temporal2 != 0) {
-		WriteFile << "; x" << temporal2 << endl;
-		temporal2 = temporal2->siguiente;
-	}
-	WriteFile << "}" << endl << endl;
-
-	grupo = 0;
-	temporal1 = this->raiz;
-	while (temporal1 != 0) {
-		grupo = grupo + 1;
-		WriteFile << "x" << temporal1 << "[label = \"" << temporal1->columna << "\", group = " << grupo << "]" << endl;
-		temporal1 = temporal1->siguiente;
-	}
-
-	temporal2 = raiz;
-	temporal1 = raiz;
-
-
-	while (temporal2 != 0) {
-		WriteFile << "y" << temporal2 << "[label = \"" << temporal2->letra << "\"]" << endl;
-		temporal2 = temporal2->abajo;
-	}
-	temporal2 = raiz;
-	temporal1 = raiz;
-	while (temporal2 != 0) {
-
-		WriteFile << "x" << temporal2 << "-> y" << temporal2 << "" << endl;
-		if (temporal1 != 0) {
-			if (temporal2->letra == temporal1->letra) {
-				WriteFile << "x" << temporal1 << "-> y" << temporal2 << endl;
+			while (col->siguiente != 0)
+			{
+				archivo << "A" << index << "->" << "A" << index + 1 << ";" << endl;
+				archivo << "A" << index + 1 << "->" << "A" << index << ";" << endl;
+				index++;
+				col = col->siguiente;
 			}
-			else {
-				NodoTablero* auxiliar = temporal1;
-				bool validador = true;
-				while (validador)
-				{
-					if (auxiliar != 0) {
-						if (auxiliar->letra == temporal2->letra) {
-							WriteFile << "x" << auxiliar << "-> y" << temporal2 << endl;
 
-						}
-						auxiliar = auxiliar->siguiente;
-					}
-					else {
-						validador = false;
-					}
+			archivo << endl;
+
+			/*------ link  root -----*/
+			archivo << "Root -> U0;" << endl;
+			archivo << "U0 -> Root;" << endl;
+			archivo << "Root -> A0;" << endl;
+			archivo << "A0 -> Root;" << endl;
+
+			archivo << endl;
+			/*----- Write same ----*/
+			archivo << "{";
+			archivo << "rank = same;Root;";
+			col = raiz->siguiente;
+			index = 0;
+
+			while (col != 0)
+			{
+				archivo << "A" << index << ";";
+				index++;
+				col = col->siguiente;
+			}
+			archivo << "}" << endl;
+
+			archivo << endl;
+			/*---- 1. Declare Node, 2. Link Node, 3. define rank -----*/
+			/*By Row*/
+
+			/*--- 1. Declare Node by row ----*/
+			row = raiz->abajo;
+			int node_id = 0;
+
+			while (row != 0)
+			{
+				NodoTablero* node = row->siguiente;
+
+				archivo << "N" << node_id << "[label =" << "\"" << row->letra << "\" width = 1.5, group =" << group_columnGraph(row) << "];" << endl;
+
+
+
+				node_id++;
+
+
+				row = row->abajo;
+			}
+
+			archivo << endl;
+			/*------ 2. Link node ---------*/
+			row = raiz->abajo;
+			node_id = 0;
+			int u = 0;
+
+			while (row != 0)
+			{
+				NodoTablero* node = row->siguiente;
+				if (node == 0) {
+					cout << "Vacio" << endl;
 				}
+				while (node != 0)
+				{
+					if (atoi(node->anterior->letra.c_str()) == 0) //-------------LINK IZUIERDA
+					{
+						cout << "Si entra" << endl;
+						archivo << "U" << u << "->" << "N" << node_id << ";" << endl;
+						archivo << "N" << node_id << "->" << "U" << u << ";" << endl;
+
+					}
+
+					const char* mes = "0";
+					const char* node_month = node->arriba->letra.c_str();
+					if (strcmp(node_month, mes) == 0) //---------------LINK ARRIBA
+					{
+						archivo << "A" << id_columnGraph(node->arriba) << "->" << "N" << node_id << ";" << endl;
+						archivo << "N" << node_id << "->" << "A" << id_columnGraph(node->arriba) << ";" << endl;
+					}
+					else
+					{
+						archivo << "N" << node_id << "->" << "N" << node_idgraph(node->arriba) << ";" << endl;
+						archivo << "N" << node_idgraph(node->arriba) << "->" << "N" << node_id << ";" << endl;
+					}
+
+					node_id++;
+					node = node->siguiente;
+
+				}
+				u++;
+				row = row->abajo;
 			}
 
-			temporal1 = temporal1->siguiente;
+			archivo << endl;
+
+			row = raiz->abajo;
+			node_id = 0;
+			u = 0;
+
+			while (row != 0) {
+				archivo << "{rank = same;U" << u << ";";
+				NodoTablero* node = row->siguiente;
+				archivo << "N" << node_id << ";";
+
+
+
+				node_id++;
+
+				archivo << "}" << endl;
+				u++;
+				row = row->abajo;
+			}
+
+			archivo << endl;
+			/*------ 3. define rank ---------*/
+			archivo << "/*Same define rank Node */" << endl;
+			row = raiz->abajo;
+			node_id = 0;
+			u = 0;
+
+			while (row != 0)
+			{
+				archivo << "{rank = same;U" << u << ";";
+				NodoTablero* node = row->siguiente;
+
+				while (node != 0)
+				{
+					archivo << "N" << node_id << ";";
+					archivo << "/*No se */" << endl;
+
+					node_id++;
+					node = node->siguiente;
+				}
+
+				archivo << "}" << endl;
+				u++;
+				row = row->abajo;
+			}
+			/*close file*/
+			archivo << "}" << endl;
+			archivo.close();
+
+			system("dot -Tpng Tablero.dot -o Tablero.png"); //Create image
+			system("Tablero.png"); //Open image
+		}
+	}
+}
+
+int Tablero::group_columnGraph(NodoTablero* temp)
+{
+	NodoTablero* col = this->raiz->siguiente;
+	int group = 2;
+	while (col != 0)
+	{
+		if (col->columna == temp->columna)
+		{
+			return group;
+			break;
+
+		}
+		group++;
+		col = col->siguiente;
+	}
+	return -1;
+}
+
+//return id column in Graphviz
+int Tablero::id_columnGraph(NodoTablero* temp)
+{
+	NodoTablero* col = raiz->siguiente;
+	int id = 0;
+	while (col != 0)
+	{
+		if (col->columna == temp->columna)
+		{
+			return id;
+			break;
+
+		}
+		id++;
+		col = col->siguiente;
+	}
+	return -1;
+
+}
+
+
+//return id node in graphviz
+int Tablero::node_idgraph(NodoTablero* temp)
+{
+	NodoTablero* row = raiz->abajo;
+	int node_id = 0;
+	const char* temp_dato = temp->letra.c_str();
+
+	while (row != 0)
+	{
+		NodoTablero* node = row->siguiente;
+		while (node != 0)
+		{
+			const char* node_dat = node->getLetra().c_str();
+			if (strcmp(node_dat, temp_dato) == 0)
+			{
+				return node_id;
+				break;
+			}
+			NodoTablero* node3D = node->siguiente;
+			while (node3D != 0) //----- VERIFICAR 3D ----
+			{
+				node_id++;
+				node3D = node3D->siguiente;
+			}
+
+			node_id++;
+			node = node->siguiente;
 		}
 
-		temporal2 = temporal2->abajo;
-
+		row = row->abajo;
 	}
-
-	temporal1 = raiz;
-	temporal2 = raiz;
-
-
-	temporal2 = raiz;
-	temporal1 = raiz;
-	while (temporal2 != 0) {
-		WriteFile << "{rank = same; x" << temporal2 << "; y" << temporal2 << "}" << endl;
-		temporal2 = temporal2->siguiente;
-	}
-
-
-
-	WriteFile << "}" << endl;
-	WriteFile.close();
-	system("dot -Tpng Discografia.dot -o Discografia.png");
-	system("Discografia.png");
+	return -1;
 }

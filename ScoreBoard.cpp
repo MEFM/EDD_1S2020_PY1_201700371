@@ -2,7 +2,7 @@
 
 void ScoreBoard::insertarSB(string nombre, int puntuacion) {
 	NodoSB* nuevo = new NodoSB(nombre, puntuacion);
-	if (this->primero != 0) {
+	if (this->primero == 0) {
 		this->primero = nuevo;
 	}
 	else {

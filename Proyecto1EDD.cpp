@@ -38,6 +38,7 @@ void menu() {
 	bool validador = true;
 	int opcion = 0;
 	while (validador) {
+		system("cls");
 		cout << "1. Leer archivo\n2. Juego\n3. Reportes\n4. Cerrar\n" << endl;
 		cout << "Ingrese la opcion a elegir" << endl;
 		cin >> opcion;
@@ -67,34 +68,35 @@ void archivo() {
 	cout << "Ingrese nombre del archivo" << endl;
 	cin.ignore();
 	getline(cin, nombre);
-	ifstream(nombre + ".json");
+	ifstream reader(nombre + ".json");
 	json j;
+	reader >> j;
+	reader.close();
 
-
-	int x, y;
+	//	int x, y;
 	string palabra;
+
+
 
 	for (const auto& el : j["dimension"]) {
 		int dimensiones = j["dimension"];
 		cuadrado = dimensiones;
-	}
-	for (const auto& el : j["casillas"]) {
-		for (const auto& ell : el["dobles"]) {
-			int x = ell["x"];
-			int y = ell["y"];
-			int valor = 2;
-			tablero->insertar("", x, y, valor);
-		}
-		for (const auto& ell : el["triples"]) {
-			x = ell["x"];
-			y = ell["y"];
-			int valor = 3;
-			tablero->insertar("", x, y, valor);
-		}
 
 	}
+	for (const auto& el : j["casillas"]["dobles"]) {
+		int x = el["x"];
+		int y = el["y"];
+		tablero->insertar("", x, y, 2);
+	}
+
+	for (const auto& el : j["casillas"]["triples"]) {
+		int x = el["x"];
+		int y = el["y"];
+		tablero->insertar("", x, y, 3);
+	}
+
 	for (const auto& el : j["diccionario"]) {
-		string palabra = j["palabra"];
+		string palabra = el["palabra"];
 		diccionario->insertar(palabra);
 	}
 
@@ -105,8 +107,8 @@ void menuJuego() {
 	int seleccion = 0;
 
 	while (validador) {
-		system("cls");
-		cout << "1. Ver ScoreBoard\n2. Buscar Jugador\n3. Ingresar Jugador\n4. Jugar" << endl;
+		//system("cls");
+		cout << "1. Ver ScoreBoard\n2. Buscar Jugador\n3. Ingresar Jugador\n4. Jugar\n5. Menu Principal\n6. Ver jugadores" << endl;
 		cout << "Ingrese la opcion que desea selccionar." << endl;
 		cin >> seleccion;
 		string nombre;
@@ -135,6 +137,12 @@ void menuJuego() {
 		case 4:
 			menuPrevia();
 			break;
+		case 5:
+			validador = false;
+			break;
+		case 6:
+			usuarios->innorden();
+			break;
 		default:
 			break;
 		}
@@ -143,23 +151,38 @@ void menuJuego() {
 
 void menuPrevia() {
 
-	string nombre1, nombre2;
+	string nombre1 = "";
+	string nombre2 = "";
 	cout << "Ingrese nombre1 " << endl;
 	cin.ignore();
-	getline(cin, nombre1);
+	getline(cin, nombre1,'\n');
 	cout << "Ingreso nombre2 " << endl;
-	getline(cin, nombre2);
-	juego(usuarios->caracteristicas(nombre1), usuarios->caracteristicas(nombre2));
+	cin >> nombre2;
+
+	if (usuarios->caracteristicas(nombre1) == 0 || usuarios->caracteristicas(nombre2) == 0) {
+		cout << "No hermano ingresaste un jugador que no esta en la lista" << endl;
+		cout << "Vuelve a intentarlo" << endl;
+		menuPrevia();
+	}
+	else {
+		juego(usuarios->caracteristicas(nombre1), usuarios->caracteristicas(nombre2));
+	}
+
 
 
 }
 
 void juego(Jugador* j1, Jugador* j2) {
 
+	//Determinar 
 	srand(time(NULL));
 	int num = rand() % 1;
 	string turno1 = "";
 	string turno2 = "";
+	if (j1 == 0 || j2 == 0) {
+		cout << "Uno de los dos jugadores no existe" << endl;
+		return;
+	}
 	if (num == 0) {
 		//Primer turno toca para j1
 		turno1 = j1->getNombre();
@@ -181,84 +204,98 @@ void juego(Jugador* j1, Jugador* j2) {
 		//Ingresar posicion en x		
 		cin >> xx;
 		cout << endl;
-		cout << "Posicion de inicio de la palabra en x: ";
+		cout << "Posicion de inicio de la palabra en y: ";
 		//Ingresar posicion en y
 		cin >> yy;
 		cout << endl;
 		cout << "Ingresar palabra" << endl;
 		cin.ignore();
 		getline(cin, palabraIngresada);
-		char* insertada = (char*)palabraIngresada.c_str();
-		cout << "Vertical u Horizontal? [V/H]" << endl;
-		char validacion1 = _getch();
-		if (validacion1 == 'V' || validacion1 == 'v') {
-			for (int i = 0; i < palabraIngresada.size(); i++) {
-				if ((yy + palabraIngresada.size()) > cuadrado) {
-					cout << "Te pasaste de las dimensiones del tablero, perdiste tu oportunidad." << endl;
+		if (diccionario->buscar(palabraIngresada) == true) {
+			char* insertada = (char*)palabraIngresada.c_str();
+			cout << "Vertical u Horizontal? [V/H]" << endl;
+			char validacion1 = _getch();
+			if (validacion1 == 'V' || validacion1 == 'v') {
+				for (int i = 0; i < palabraIngresada.size(); i++) {
+					if ((yy + palabraIngresada.size()) > cuadrado) {
+						cout << "Te pasaste de las dimensiones del tablero, perdiste tu oportunidad." << endl;
+						i = palabraIngresada.size() - 1;
+					}
+					else {
+						tablero->insertar(insertada[i] + "", xx, yy + i);
+					}
 				}
-				else {
-					tablero->insertar(insertada[i] + "", xx, yy + i);
+			}
+			else if (validacion1 == 'H' || validacion1 == 'h') {
+				for (int i = 0; i < palabraIngresada.size(); i++) {
+					if ((xx + palabraIngresada.size()) > cuadrado) {
+						cout << "Te pasaste de las dimensiones del tablero, perdiste tu oportunidad." << endl;
+					}
+					else {
+						tablero->insertar(insertada[i] + "", xx + i, yy);
+					}
 				}
 			}
 		}
-		else if (validacion1 == 'N' || validacion1 == 'n') {
-			for (int i = 0; i < palabraIngresada.size(); i++) {
-				if ((xx + palabraIngresada.size()) > cuadrado) {
-					cout << "Te pasaste de las dimensiones del tablero, perdiste tu oportunidad." << endl;
-				}
-				else {
-					tablero->insertar(insertada[i] + "", xx + i, yy);
-				}
-			}
+		else {
+			cout << "Perdiste tu turno, la palabra no existe" << endl;
 		}
 
+		cout << endl;
+		cout << endl;
 
 		cout << "Te toca colocar tu palabra jugador " << turno2 << endl;
 		cout << "Posicion de inicio de la palabra en x: ";
 		//Ingresar posicion en x
 		cin >> xx;
 		cout << endl;
-		cout << "Posicion de inicio de la palabra en x: ";
+		cout << "Posicion de inicio de la palabra en y: ";
 		//Ingresar posicion en y
 		cin >> yy;
 		cout << endl;
 		cout << "Ingresar palabra" << endl;
 		cin.ignore();
 		getline(cin, palabraIngresada);
-		char* insertadaa = (char*)palabraIngresada.c_str();
-		cout << "Vertical u Horizontal? [V/H]" << endl;
-		char validacion2 = _getch();
-		if (validacion2 == 'V' || validacion2 == 'v') {
-			for (int i = 0; i < palabraIngresada.size(); i++) {
-				if ((yy + palabraIngresada.size()) > cuadrado) {
-					cout << "Te pasaste de las dimensiones del tablero, perdiste tu oportunidad." << endl;
-				}
-				else {
-					tablero->insertar(insertadaa[i] + "", xx, yy + i);
-				}
-			}
-		}
-		else if (validacion2 == 'N' || validacion2 == 'n') {
-			for (int i = 0; i < palabraIngresada.size(); i++) {
-				if ((xx + palabraIngresada.size()) > cuadrado) {
-					cout << "Te pasaste de las dimensiones del tablero, perdiste tu oportunidad." << endl;
-				}
-				else {
-					tablero->insertar(insertadaa[i] + "", xx + i, yy);
-				}
-			}
-		}
+		if (diccionario->buscar(palabraIngresada) == true) {
 
+			char* insertadaa = (char*)palabraIngresada.c_str();
+			cout << "Vertical u Horizontal? [V/H]" << endl;
+			char validacion2 = _getch();
+			if (validacion2 == 'V' || validacion2 == 'v') {
+				for (int i = 0; i < palabraIngresada.size(); i++) {
+					if ((yy + palabraIngresada.size()) > cuadrado) {
+						cout << "Te pasaste de las dimensiones del tablero, perdiste tu oportunidad." << endl;
+					}
+					else {
+						tablero->insertar(insertadaa[i] + "", xx, yy + i);
+					}
+				}
+			}
+			else if (validacion2 == 'N' || validacion2 == 'n') {
+				for (int i = 0; i < palabraIngresada.size(); i++) {
+					if ((xx + palabraIngresada.size()) > cuadrado) {
+						cout << "Te pasaste de las dimensiones del tablero, perdiste tu oportunidad." << endl;
+					}
+					else {
+						tablero->insertar(insertadaa[i] + "", xx + i, yy);
+					}
+				}
+			}
+
+		}
+		else {
+			cout << "Perdiste tu turno, la palabra no existe" << endl;
+		}
 
 
 
 		cout << "Ya pasaron sus turnos, desean seguir jugando? [S/N]" << endl;
 		char caracter = _getch();
 		if (caracter == 'S' || caracter == 's') {
-			validador = false;
+			validador = true;
 		}
 		else if (caracter == 'n' || caracter == 'N') {
-			validador = true;
+			validador = false;
 		}
 	}
 
@@ -274,7 +311,7 @@ void menuReportes() {
 		system("cls");
 		cout << "-----------MENU DE REPORTES-----------" << endl;
 		cout << "1. Diccionario\n2. Fichas\n3. Pre-Orden Jugadores\n4. In-Orden Jugadores" << endl;
-		cout << "5. Post-Orden Jugadores\n6. Puntajes por Jugador\n7. Scoreboard\n8. Tablero\n9. Fichas del game" << endl;
+		cout << "5. Post-Orden Jugadores\n6. Puntajes por Jugador\n7. Scoreboard\n8. Tablero\n9. Fichas del game\n10. Menu principal" << endl;
 		cout << endl;
 		cout << "Ingrese su opcion: ";
 		cin >> opcion;
@@ -311,6 +348,9 @@ void menuReportes() {
 		case 9:
 			fichas->graficar();//RECORDATE DE HACER EL REPORTE DE LAS FICHAS DE JUGADOR
 			break;
+		case 10:
+			validador = false;
+			break;
 		}
 	}
 }
@@ -319,7 +359,11 @@ int main()
 {
 
 	menu();
-	//tab.graficar();
+	/*tablero->insertar("qerty", 1, 12);
+	tablero->insertar("qerty", 1, 13);
+	tablero->insertar("qerty", 2, 14);
+	tablero->insertar("qerty", 3, 15);
+	tablero->graficar();*/
 }
 
 // Ejecutar programa: Ctrl + F5 o menú Depurar > Iniciar sin depurar

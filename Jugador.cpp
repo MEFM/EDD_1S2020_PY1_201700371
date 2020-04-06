@@ -53,28 +53,81 @@ void Usuarios::insertar(string nombre, Diccionario* diccionario, ScoreBoard* pun
 void Usuarios::innorden(Jugador* nodo) {
 	if (nodo != 0) {
 		ofstream archivo("innorden.dot");
+		archivo << "digraph a{" << endl;
+		archivo << "rankdir = LR" << endl;
 		innorden(nodo->getIzquierda());
+		if (nodo->getIzquierda() != 0) {
+			controla += nodo->getIzquierda()->getNombre()+"->"+nodo->getNombre()+"\n";
+			
+		}
+		else {
+			if (nodo->getDerecha() != 0) {
+				controla += nodo->getNombre() + "->" + nodo->getDerecha()->getNombre() + "\n";
+			}
+		}
 		cout << nodo->getNombre() << endl;
 		innorden(nodo->getDerecha());
+		archivo << controla << endl;
+		archivo << "}" << endl;
 		archivo.close();
+		system("dot -Tpng innorden.dot -o innorden.png");
+		system("innorden.png");
 	}
 }
 
 void Usuarios::innorden() {
+	controla = "";
 	innorden(this->raiz);
 }
+
+
+string ultimoNombre = "";
+bool finalizquierda = false;
 
 void Usuarios::preorden(Jugador* nodo) {
 	if (nodo != 0) {
 		ofstream archivo("preorden.dot");
+		archivo << "digraph a {" << endl;
+		archivo << "rankdir = LR" << endl;
+
+
+
 		cout << nodo->getNombre() << endl;
+
+		if (nodo->getIzquierda() != 0) {
+			controla += nodo->getNombre() + "->" + nodo->getIzquierda()->getNombre() + "\n";
+			ultimoNombre = nodo->getIzquierda()->getNombre();
+		}
+		else {
+			if (nodo->getDerecha() != 0) {
+				if (finalizquierda == false) {
+					controla += ultimoNombre + "->" + nodo->getDerecha()->getNombre() + "\n";
+					finalizquierda = true;
+				}
+				else {
+					//controla += ultimoNombre + "->" + nodo->getDerecha()->getNombre() + "\n";
+					controla += nodo->getNombre() + "->" + nodo->getDerecha()->getNombre() + "\n";
+				}
+
+			}
+		}
+
 		preorden(nodo->getIzquierda());
 		preorden(nodo->getDerecha());
+
+		archivo << controla << endl;
+		archivo << "}" << endl;
 		archivo.close();
+
+		system("dot -Tpng preorden.dot -o preorden.png");
+		system("preorden.png");
+
 	}
+
 }
 
 void Usuarios::preorden() {
+	controla = "";
 	preorden(this->raiz);
 }
 
@@ -82,18 +135,31 @@ void Usuarios::postorden(Jugador* nodo) {
 	if (nodo != 0) {
 		ofstream archivo("postorden.dot");
 		archivo << "digraph a{" << endl;
-		archivo << "RANKDIR = LR" << endl;
-		archivo << nodo->getNombre() << "->" << nodo->getIzquierda()->getNombre() << endl;
+		archivo << "rankdir = LR" << endl;
+		archivo << "node[shape = box]" << endl;
+
 		postorden(nodo->getIzquierda());
-		archivo << nodo->getNombre() << "->" << nodo->getDerecha()->getNombre() << endl;
 		postorden(nodo->getDerecha());
 		cout << nodo->getNombre() << endl;
+		if (nodo->getIzquierda() != 0 && nodo->getDerecha() != 0) {
+			controla += nodo->getIzquierda()->getNombre()+"->"+nodo->getDerecha()->getNombre()+"\n";
+		}
+		else {
+			if (nodo->getDerecha() != 0) {
+				controla += nodo->getNombre() + "->" + nodo->getDerecha()->getNombre() + "\n";
+			}
+		}
+
+		archivo << controla << endl;
 		archivo << "}" << endl;
 		archivo.close();
+		system("dot -Tpng postorden.dot -o postorden.png");
+		system("postorden.png");
 	}
 }
 
 void Usuarios::postorden() {
+	controla = "";
 	postorden(this->raiz);
 }
 
@@ -199,7 +265,7 @@ Jugador* Usuarios::caracteristicas(Jugador* nodo, string nombre) {
 		if (nodo->getNombre() == nombre) {
 			return nodo;
 		}
-		else if (strcmp(nombre1, nombre2) < 0) {
+		else if (nombre.size() < nodo->getNombre().size()) {
 			if (nodo->getIzquierda() != 0) {
 				caracteristicas(nodo->getIzquierda(), nombre);
 			}

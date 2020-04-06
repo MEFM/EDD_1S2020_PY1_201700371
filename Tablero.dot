@@ -1,0 +1,50 @@
+digraph Matriz { 
+node [shape=box]
+
+Root[label = "Root", width=1.5, group = 1];
+
+e0[ shape = point, width = 0 ];
+e1[ shape = point, width = 0 ];
+
+U0[label ="1" width = 1.5, group = 1 ];
+U1[label ="2" width = 1.5, group = 1 ];
+U2[label ="3" width = 1.5, group = 1 ];
+
+U0->U1;
+U1->U0;
+U1->U2;
+U2->U1;
+
+A0[label ="12" width = 1.5, group = 2];
+A1[label ="13" width = 1.5, group = 3];
+A2[label ="14" width = 1.5, group = 4];
+A3[label ="15" width = 1.5, group = 5];
+
+A0->A1;
+A1->A0;
+A1->A2;
+A2->A1;
+A2->A3;
+A3->A2;
+
+Root -> U0;
+U0 -> Root;
+Root -> A0;
+A0 -> Root;
+
+{rank = same;Root;A0;A1;A2;A3;}
+
+N0[label ="qerty" width = 1.5, group =3];
+N1[label ="qerty" width = 1.5, group =4];
+N2[label ="qerty" width = 1.5, group =5];
+
+
+{rank = same;U0;N0;}
+{rank = same;U1;N1;}
+{rank = same;U2;N2;}
+
+/*Same define rank Node */
+{rank = same;U0;}
+{rank = same;U1;}
+{rank = same;U2;}
+}

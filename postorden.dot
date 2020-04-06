@@ -1,0 +1,9 @@
+digraph a{
+rankdir = LR
+node[shape = box]
+Alfredooooooooo->Alfonsitos
+ala->al
+Alan->ala
+Alfonso->Alan
+
+}

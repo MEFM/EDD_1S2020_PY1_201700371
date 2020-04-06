@@ -47,6 +47,7 @@ private:
 	NodoDicc* ultimo;
 public:
 	void insertar(string palabra);
+	bool buscar(string palabra);
 	void recorrer();
 	void graficar(); //Exclusivo para modulo de reportes
 

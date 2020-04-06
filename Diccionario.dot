@@ -1,0 +1,20 @@
+digraph a{
+x010E1538[label = "Palabra = pepsi"]
+x010E1538-> x010E1268
+x010E1268[label = "Palabra = bebe"]
+x010E1268-> x010E15D8
+x010E15D8[label = "Palabra = libro"]
+x010E15D8-> x010E17B8
+x010E17B8[label = "Palabra = kiki"]
+x010E17B8-> x010E1178
+x010E1178[label = "Palabra = puerco"]
+x010E1178-> x010E13A8
+x010E13A8[label = "Palabra = marry"]
+x010E13A8-> x010E11C8
+x010E11C8[label = "Palabra = merda"]
+x010E11C8-> x010E13F8
+x010E13F8[label = "Palabra = nene"]
+x010E13F8-> x010E1768
+x010E1768[label = "Palabra = hola"]
+x010E1768-> x010E1538
+}

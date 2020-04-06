@@ -1,91 +1,76 @@
 digraph discografia{
 node [shape = rectangle]
-x01426650[label = "-1", width = 1.5, group = 1];
+x00906118[label = "-1", width = 1.5, group = 1];
 e0[ shape = point, width = 0 ];
 e1[ shape = point, width = 0 ];
 
 
-x01426258[label = "2", width = 1.5, group = 1];
+x009107F0[label = "2", width = 1.5, group = 1];
 
 
-x01431958[label = "3", width = 1.5, group = 1];
+x00910940[label = "3", width = 1.5, group = 1];
 
 
-x01431BF8[label = "5", width = 1.5, group = 1];
+x00910A90[label = "4", width = 1.5, group = 1];
 
 
-x01431DE0[label = "6", width = 1.5, group = 1];
+x00910CE8[label = "5", width = 1.5, group = 1];
 
 
-x01431EC0[label = "7", width = 1.5, group = 1];
+x00911148[label = "6", width = 1.5, group = 1];
 
 
-x01431AA8[label = "8", width = 1.5, group = 1];
-
-
-x01426650->x01426258
-x01426258->x01426650
-x01426258->x01431958
-x01431958->x01426258
-x01431958->x01431BF8
-x01431BF8->x01431958
-x01431BF8->x01431DE0
-x01431DE0->x01431BF8
-x01431DE0->x01431EC0
-x01431EC0->x01431DE0
-x01431EC0->x01431AA8
-x01426118[label = "8", width = 1.5, group = 1];
-x014318E8[label = "9", width = 1.5, group = 1];
-x01431A38[label = "10", width = 1.5, group = 1];
-x01431B88[label = "11", width = 1.5, group = 1];
-x01432390[label = "12", width = 1.5, group = 1];
-x01426650->x01426118
-x01426118->x01426650
-x01426118->x014318E8
-x014318E8->x01426118
-x014318E8->x01431A38
-x01431A38->x014318E8
-x01431A38->x01431B88
-x01431B88->x01431A38
-x01431B88->x01432390
+x00906118->x009107F0
+x009107F0->x00906118
+x009107F0->x00910940
+x00910940->x009107F0
+x00910940->x00910A90
+x00910A90->x00910940
+x00910A90->x00910CE8
+x00910CE8->x00910A90
+x00910CE8->x00911148
+x00910780[label = "1", width = 1.5, group = 1];
+x00910B70[label = "5", width = 1.5, group = 1];
+x00910A20[label = "6", width = 1.5, group = 1];
+x009108D0[label = "7", width = 1.5, group = 1];
+x00906118->x00910780
+x00910780->x00906118
+x00910780->x00910B70
+x00910B70->x00910780
+x00910B70->x00910A20
+x00910A20->x00910B70
+x00910A20->x009108D0
 {rank = same; Root
-; x01426650
-; x01426118
-; x014318E8
-; x01431A38
-; x01431B88
-; x01432390
+; x00906118
+; x00910780
+; x00910B70
+; x00910A20
+; x009108D0
 }
 
-x01426650[label = "-1", group = 1]
-x01426118[label = "8", group = 2]
-x014318E8[label = "9", group = 3]
-x01431A38[label = "10", group = 4]
-x01431B88[label = "11", group = 5]
-x01432390[label = "12", group = 6]
-y01426650[label = ""]
-y01426258[label = "a"]
-y01431958[label = "b"]
-y01431BF8[label = "d"]
-y01431DE0[label = "e"]
-y01431EC0[label = "f"]
-y01431AA8[label = "c"]
-x01426650-> y01426650
-x01426650-> y01426650
-x01426258-> y01426258
-x01426118-> y01426258
-x01431958-> y01431958
-x014318E8-> y01431958
-x01431BF8-> y01431BF8
-x01431B88-> y01431BF8
-x01431DE0-> y01431DE0
-x01431EC0-> y01431EC0
-x01432390-> y01431EC0
-x01431AA8-> y01431AA8
-{rank = same; x01426650; y01426650}
-{rank = same; x01426118; y01426118}
-{rank = same; x014318E8; y014318E8}
-{rank = same; x01431A38; y01431A38}
-{rank = same; x01431B88; y01431B88}
-{rank = same; x01432390; y01432390}
+x00906118[label = "-1", group = 1]
+x00910780[label = "1", group = 2]
+x00910B70[label = "5", group = 3]
+x00910A20[label = "6", group = 4]
+x009108D0[label = "7", group = 5]
+y00906118[label = ""]
+y009107F0[label = "1"]
+y00910940[label = "2"]
+y00910A90[label = "3"]
+y00910CE8[label = "4"]
+y00911148[label = "6"]
+x00906118-> y00906118
+x00906118-> y00906118
+x009107F0-> y009107F0
+x00910940-> y00910940
+x009108D0-> y00910940
+x00910A90-> y00910A90
+x00910A20-> y00910A90
+x00910CE8-> y00910CE8
+x00911148-> y00911148
+{rank = same; x00906118; y00906118}
+{rank = same; x00910780; y00910780}
+{rank = same; x00910B70; y00910B70}
+{rank = same; x00910A20; y00910A20}
+{rank = same; x009108D0; y009108D0}
 }

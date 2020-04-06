@@ -42,8 +42,28 @@ void Diccionario::graficar() {
 		} while (aux != primero);
 		archivo << "}" << endl;
 		archivo.close();
+		system("dot -Tpng Diccionario.dot -o Diccionario.png");
+		system("Diccionario.png");
+
 	}
 	else {
 		cout << "Lo siento hermano no haz ingresado nada al diccionario" << endl;
+	}
+}
+
+bool Diccionario::buscar(string palabra) {
+	if (this->primero == 0) {
+		return false;
+	}
+	else {
+		NodoDicc* auxiliar = this->primero;
+
+		do{
+			if (auxiliar->getPalabra() == palabra) {
+				return true;
+			}
+			auxiliar = auxiliar->getSiguiente();
+		} while (auxiliar != this->primero);
+		return false;
 	}
 }

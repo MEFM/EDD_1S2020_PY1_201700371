@@ -11,11 +11,11 @@ class NodoFicha {
 private:
 	NodoFicha* siguienteUsuario;
 	NodoFicha* siguiente;
-	string letra;
+	char letra;
 	int valor;
 	int cantidad;
 public:
-	NodoFicha(string letra, int valor, int cantidad) {
+	NodoFicha(char letra, int valor, int cantidad) {
 		this->siguiente = 0;
 		this->siguienteUsuario = 0;
 		this->letra = letra;
@@ -26,7 +26,7 @@ public:
 	void setSiguiente(NodoFicha* nuevo) {
 		this->siguiente = nuevo;
 	}
-	void setLetra(string letra) {
+	void setLetra(char letra) {
 		this->letra = letra;
 	}
 	void setValor(int valor) {
@@ -45,7 +45,7 @@ public:
 	NodoFicha* getSiguiente() {
 		return this->siguiente;
 	}
-	string getLetra() {
+	char getLetra() {
 		return this->letra;
 	}
 	int getCantidad() {
@@ -62,8 +62,12 @@ private:
 	NodoFicha* primero;
 	NodoFicha* ultimo;
 public:
+	Ficha() {
+		this->primero = 0;
+		this->ultimo = 0;
+	}
 	void insertar();
-	void insertar(string letra, int valor, int cantidad);
+	void insertar(char letra, int valor, int cantidad);
 	void pilaFichas(string letra, int valor, int cantidad);
 	void mostrar();
 	void graficar();//Exclusivo para los reportes

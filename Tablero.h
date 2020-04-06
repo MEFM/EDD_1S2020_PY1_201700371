@@ -61,6 +61,9 @@ public:
 		this->raiz = new NodoTablero("", -1, -1, 0);
 	}
 
+	int node_idgraph(NodoTablero* temp);
+	int group_columnGraph(NodoTablero* temp);
+	int id_columnGraph(NodoTablero* temp);
 	NodoTablero* buscarColumna(int columna);
 	NodoTablero* buscarFila(int fila);
 	NodoTablero* insertarColumna(NodoTablero*, NodoTablero*);

@@ -12,54 +12,49 @@ void Ficha::insertar() {
 		{
 		case 1:
 			cantidad = 4 + rand() % (13 - 4);
-			insertar(letras[i] + "", valor, cantidad);
+			insertar(letras[i] , valor, cantidad);
 			break;
 		case 2:
 			cantidad = 3 + rand() % (11 - 3);
-			insertar(letras[i] + "", valor, cantidad);
+			insertar(letras[i], valor, cantidad);
 			break;
 		case 3:
 			cantidad = 3 + rand() % (10 - 3);
-			insertar(letras[i] + "", valor, cantidad);
+			insertar(letras[i], valor, cantidad);
 			break;
 		case 4:
 			cantidad = 2 + rand() % (9 - 2);
-			insertar(letras[i] + "", valor, cantidad);
+			insertar(letras[i], valor, cantidad);
 			break;
 		case 5:
 			cantidad = 1 + rand() % (6 - 1);
-			insertar(letras[i] + "", valor, cantidad);
+			insertar(letras[i], valor, cantidad);
 			break;
 		case 8:
 			cantidad = 1 + rand() % (5 - 1);
-			insertar(letras[i] + "", valor, cantidad);
+			insertar(letras[i], valor, cantidad);
 			break;
 		case 10:
 			cantidad = 1 + rand() % (3 - 1);
-			insertar(letras[i] + "", valor, cantidad);
+			insertar(letras[i], valor, cantidad);
 			break;
 		default:
-			i--;
+			cantidad = 4 + rand() % (13 - 4);
+			insertar(letras[i], valor, cantidad);
 			break;
 		}
 	}
 }
-
-void Ficha::insertar(string letra, int valor, int cantidad) {
+int contar = 0;
+void Ficha::insertar(char letra, int valor, int cantidad) {
 	NodoFicha* nuevo = new NodoFicha(letra, valor, cantidad);
-
+	contar++;
 	if (this->primero == 0) {
-		this->primero = this->ultimo = nuevo;
+		this->primero = nuevo;
 	}
 	else {
-		NodoFicha* aux = this->primero;
-		while (aux->getSiguiente() != 0) {
-			aux = aux->getSiguiente();
-		}
-		if (aux->getSiguiente() == 0) {
-			aux->setSiguiente(nuevo);
-			this->ultimo = nuevo;
-		}
+		nuevo->setSiguiente(primero);
+		this->primero = nuevo;
 	}
 }
 
@@ -84,7 +79,7 @@ void Ficha::pilaFichas(string letra, int valor, int cantidad) {
 }
 
 void Ficha::graficar() {
-	if (this->primero != 0) {
+	if (this->primero == 0) {
 		cout << "No hay fichas bro, ingresalas desde el archivo" << endl;
 	}
 	else {
@@ -96,7 +91,7 @@ void Ficha::graficar() {
 		NodoFicha* auxiliar = this->primero;
 
 		while (auxiliar != 0) {
-			archivo << "x" << auxiliar << "[label = \"" << auxiliar->getLetra() << "\"]" << endl;
+			archivo << "x" << auxiliar << "[label = \"" << auxiliar->getLetra() << " "<< auxiliar->getValor() << "\"]" << endl;
 			archivo << "x" << auxiliar << "-> x" << auxiliar->getSiguiente() << endl;
 			auxiliar = auxiliar->getSiguiente();
 		}
