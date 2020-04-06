@@ -22,7 +22,6 @@ public:
 		this->valor = valor;
 		this->cantidad = cantidad;
 	}
-
 	void setSiguiente(NodoFicha* nuevo) {
 		this->siguiente = nuevo;
 	}
@@ -70,6 +69,7 @@ public:
 	void insertar(char letra, int valor, int cantidad);
 	void pilaFichas(string letra, int valor, int cantidad);
 	void mostrar();
+	int valorLetra(char letra);
 	void graficar();//Exclusivo para los reportes
 };
 

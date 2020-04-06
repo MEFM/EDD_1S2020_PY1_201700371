@@ -9,16 +9,26 @@ e1[ shape = point, width = 0 ];
 U0[label ="1" width = 1.5, group = 1 ];
 U1[label ="2" width = 1.5, group = 1 ];
 U2[label ="3" width = 1.5, group = 1 ];
+U3[label ="4" width = 1.5, group = 1 ];
+U4[label ="7" width = 1.5, group = 1 ];
 
 U0->U1;
 U1->U0;
 U1->U2;
 U2->U1;
+U2->U3;
+U3->U2;
+U3->U4;
+U4->U3;
 
-A0[label ="12" width = 1.5, group = 2];
-A1[label ="13" width = 1.5, group = 3];
-A2[label ="14" width = 1.5, group = 4];
-A3[label ="15" width = 1.5, group = 5];
+A0[label ="1" width = 1.5, group = 2];
+A1[label ="2" width = 1.5, group = 3];
+A2[label ="3" width = 1.5, group = 4];
+A3[label ="4" width = 1.5, group = 5];
+A4[label ="5" width = 1.5, group = 6];
+A5[label ="6" width = 1.5, group = 7];
+A6[label ="7" width = 1.5, group = 8];
+A7[label ="8" width = 1.5, group = 9];
 
 A0->A1;
 A1->A0;
@@ -26,25 +36,39 @@ A1->A2;
 A2->A1;
 A2->A3;
 A3->A2;
+A3->A4;
+A4->A3;
+A4->A5;
+A5->A4;
+A5->A6;
+A6->A5;
+A6->A7;
+A7->A6;
 
 Root -> U0;
 U0 -> Root;
 Root -> A0;
 A0 -> Root;
 
-{rank = same;Root;A0;A1;A2;A3;}
+{rank = same;Root;A0;A1;A2;A3;A4;A5;A6;A7;}
 
-N0[label ="qerty" width = 1.5, group =3];
-N1[label ="qerty" width = 1.5, group =4];
-N2[label ="qerty" width = 1.5, group =5];
+N0[label ="" width = 1.5, group =3];
+N1[label ="orden.dot" width = 1.5, group =5];
+N2[label ="" width = 1.5, group =5];
+N3[label ="en.dot" width = 1.5, group =9];
+N4[label ="" width = 1.5, group =6];
 
 
 {rank = same;U0;N0;}
 {rank = same;U1;N1;}
 {rank = same;U2;N2;}
+{rank = same;U3;N3;}
+{rank = same;U4;N4;}
 
 /*Same define rank Node */
 {rank = same;U0;}
 {rank = same;U1;}
 {rank = same;U2;}
+{rank = same;U3;}
+{rank = same;U4;}
 }

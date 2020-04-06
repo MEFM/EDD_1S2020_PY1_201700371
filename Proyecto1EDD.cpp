@@ -61,7 +61,6 @@ void menu() {
 		}
 	}
 }
-
 void archivo() {
 	string nombre = "";
 
@@ -94,14 +93,14 @@ void archivo() {
 		int y = el["y"];
 		tablero->insertar("", x, y, 3);
 	}
-
+	
 	for (const auto& el : j["diccionario"]) {
 		string palabra = el["palabra"];
 		diccionario->insertar(palabra);
 	}
+	fichas->insertar();
 
 }
-
 void menuJuego() {
 	bool validador = true;
 	int seleccion = 0;
@@ -148,7 +147,6 @@ void menuJuego() {
 		}
 	}
 }
-
 void menuPrevia() {
 
 	string nombre1 = "";
@@ -175,6 +173,8 @@ void menuPrevia() {
 void juego(Jugador* j1, Jugador* j2) {
 
 	//Determinar 
+	int jugador1 = 0;
+	int jugador2 = 0;
 	srand(time(NULL));
 	int num = rand() % 1;
 	string turno1 = "";
@@ -222,7 +222,9 @@ void juego(Jugador* j1, Jugador* j2) {
 						i = palabraIngresada.size() - 1;
 					}
 					else {
+						
 						tablero->insertar(insertada[i] + "", xx, yy + i);
+						jugador1 += fichas->valorLetra(insertada[i]);
 					}
 				}
 			}
@@ -233,6 +235,7 @@ void juego(Jugador* j1, Jugador* j2) {
 					}
 					else {
 						tablero->insertar(insertada[i] + "", xx + i, yy);
+						jugador1 += fichas->valorLetra(insertada[i]);
 					}
 				}
 			}
@@ -267,17 +270,19 @@ void juego(Jugador* j1, Jugador* j2) {
 						cout << "Te pasaste de las dimensiones del tablero, perdiste tu oportunidad." << endl;
 					}
 					else {
-						tablero->insertar(insertadaa[i] + "", xx, yy + i);
+						tablero->insertar(insertadaa[i] + ""+i, xx, yy + i);
+						jugador2 += fichas->valorLetra(insertadaa[i]);
 					}
 				}
 			}
-			else if (validacion2 == 'N' || validacion2 == 'n') {
+			else if (validacion2 == 'H' || validacion2 == 'h') {
 				for (int i = 0; i < palabraIngresada.size(); i++) {
 					if ((xx + palabraIngresada.size()) > cuadrado) {
 						cout << "Te pasaste de las dimensiones del tablero, perdiste tu oportunidad." << endl;
 					}
 					else {
 						tablero->insertar(insertadaa[i] + "", xx + i, yy);
+						jugador2 += fichas->valorLetra(insertadaa[i]);
 					}
 				}
 			}
@@ -296,6 +301,12 @@ void juego(Jugador* j1, Jugador* j2) {
 		}
 		else if (caracter == 'n' || caracter == 'N') {
 			validador = false;
+			clasificacion->insertarSB(j1->getNombre(), jugador1);
+			clasificacion->insertarSB(j2->getNombre(), jugador2);
+			j1->setPuntajes(clasificacion);
+			j2->setPuntajes(clasificacion);
+			
+
 		}
 	}
 

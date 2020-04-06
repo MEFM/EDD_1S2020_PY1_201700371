@@ -36,6 +36,57 @@ void Usuarios::insertar(Jugador* nodo, string nombre, Diccionario* diccionario, 
 
 }
 
+void Usuarios::insertar(string nombre, Diccionario* diccionario, ScoreBoard* puntuaciones, Ficha* ficha) {
+	if (this->raiz == 0) {
+		this->raiz = new Jugador(nombre, diccionario, puntuaciones, ficha);
+		cout << "Si" << endl;
+		this->osiosi = raiz;
+		return;
+	}
+	else {
+		cout << "Entro" << endl;
+		this->insertar(this->raiz, nombre, diccionario, puntuaciones, ficha);
+
+	}
+}
+
+
+void Usuarios::insertar(Jugador* nodo, string nombre, Diccionario* diccionario, ScoreBoard* puntuaciones, Ficha* ficha) {
+	if (nodo != 0) {
+		char* palabra2 = (char*)nodo->getNombre().c_str();
+		char* palabra1 = (char*)nombre.c_str();
+
+		if (nombre.size() > nodo->getNombre().size()) {
+			//Lado izquierdo 
+			if (nodo->getIzquierda() != 0) {
+				insertar(nodo->getIzquierda(), nombre, diccionario, puntuaciones, ficha);
+
+			}
+			else {
+				nodo->setIzquierda(new Jugador(nombre, diccionario, puntuaciones, ficha));
+				cout << nodo->getNombre() << " nodo" << endl;
+				cout << nombre << " izquierdo" << endl;
+				//	this->osiosi = this->raiz;
+			}
+		}
+		else if (nombre.size() < nodo->getNombre().size()) {
+			//Lado derecho
+			if (nodo->getDerecha() != 0) {
+				insertar(nodo->getDerecha(), nombre, diccionario, puntuaciones, ficha);
+			}
+			else {
+				nodo->setDerecho(new Jugador(nombre, diccionario, puntuaciones, ficha));
+				cout << nombre << " derecho" << endl;
+
+			}
+		}
+		else {
+			cout << "Nombre repetido, ingresa otro por favor" << endl;
+		}
+	}
+
+}
+
 void Usuarios::insertar(string nombre, Diccionario* diccionario, ScoreBoard* puntuaciones) {
 	if (this->raiz == 0) {
 		this->raiz = new Jugador(nombre, diccionario, puntuaciones);
@@ -57,8 +108,8 @@ void Usuarios::innorden(Jugador* nodo) {
 		archivo << "rankdir = LR" << endl;
 		innorden(nodo->getIzquierda());
 		if (nodo->getIzquierda() != 0) {
-			controla += nodo->getIzquierda()->getNombre()+"->"+nodo->getNombre()+"\n";
-			
+			controla += nodo->getIzquierda()->getNombre() + "->" + nodo->getNombre() + "\n";
+
 		}
 		else {
 			if (nodo->getDerecha() != 0) {
@@ -142,7 +193,7 @@ void Usuarios::postorden(Jugador* nodo) {
 		postorden(nodo->getDerecha());
 		cout << nodo->getNombre() << endl;
 		if (nodo->getIzquierda() != 0 && nodo->getDerecha() != 0) {
-			controla += nodo->getIzquierda()->getNombre()+"->"+nodo->getDerecha()->getNombre()+"\n";
+			controla += nodo->getIzquierda()->getNombre() + "->" + nodo->getDerecha()->getNombre() + "\n";
 		}
 		else {
 			if (nodo->getDerecha() != 0) {

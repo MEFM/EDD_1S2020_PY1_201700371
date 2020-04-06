@@ -18,7 +18,17 @@ private:
 	string nombre;
 	Diccionario* diccionario;
 	ScoreBoard* puntajes; //Nada mas el normal mierda
+	Ficha* fichas;
 public:
+	Jugador(string nombre, Diccionario* diccionario, ScoreBoard* puntajes,Ficha* fichas) {
+		this->izquierda = 0;
+		this->derecha = 0;
+		this->nombre = nombre;
+		this->diccionario = diccionario;
+		this->puntajes = puntajes;
+		this->fichas = fichas;
+	}
+
 	Jugador(string nombre, Diccionario* diccionario, ScoreBoard* puntajes) {
 		this->izquierda = 0;
 		this->derecha = 0;
@@ -41,7 +51,14 @@ public:
 	void setPuntajes(ScoreBoard* puntajes) {
 		this->puntajes = puntajes;
 	}
+	void setFichas(Ficha* fichas) {
+		this->fichas = fichas;
+	}
 
+
+	Ficha* getFichas() {
+		return this->fichas;
+	}
 	Jugador* getIzquierda() {
 		return this->izquierda;
 	}
@@ -65,7 +82,12 @@ private:
 	Jugador* raiz;
 	Jugador* osiosi;
 	string controla;
+	//Insertar real
+	void insertar(Jugador* nodo, string nombre, Diccionario* diccionario, ScoreBoard* puntuaciones, Ficha* fichas);
+
+
 	void insertar(Jugador* nodo, string nombre, Diccionario* diccionario, ScoreBoard* puntuaciones);
+	
 	//Los metodos de recorridos serviran para hacer reportes
 	void innorden(Jugador* nodo);
 	void preorden(Jugador* nodo);
@@ -79,6 +101,7 @@ public:
 		this->raiz = 0;
 		this->osiosi = 0;
 	}
+	void insertar(string nombre, Diccionario* diccionario, ScoreBoard* puntuaciones, Ficha* fichas);
 	void insertar(string nombre, Diccionario* diccionario, ScoreBoard* puntuaciones);
 	void innorden();
 	void preorden();

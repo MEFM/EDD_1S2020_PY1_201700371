@@ -1,8 +1,8 @@
 #include "Ficha.h"
 
 void Ficha::insertar() {
-	char letras[] = { 'A','B','C','D','E','F','G','H','I','J','K','L',
-		'M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z' };
+	char letras[] = { 'a','b','c','d','e','f','g','h','i','j','k','l',
+		'm','n','o','p','q','r','s','t','u','v','w','x','y','z' };
 
 	for (int i = 0; i < 26; i++) {
 		srand(time(NULL));
@@ -101,4 +101,23 @@ void Ficha::graficar() {
 		system("dot -Tpng cola.dot -o cola.png");
 		system("cola.png");
 	}
+}
+
+int Ficha::valorLetra(char letra) {
+	
+	
+	if (this->primero == 0) {
+		cout << "Ingrese las letras" << endl;
+	}
+	else {
+		NodoFicha* auxliar = this->primero;
+		while (auxliar != 0)
+		{
+			if (auxliar->getLetra() == letra) {
+				return auxliar->getValor();
+			}
+			auxliar = auxliar->getSiguiente();
+		}
+	}
+	return 0;
 }
